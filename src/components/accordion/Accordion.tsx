@@ -6,7 +6,7 @@ const Accordion = () => {
   const [openStep, setOpenStep] = useState(1);
 
   return (
-    <div>
+    <div className="bg-white p-3 rounded-xl">
       {STEPS.map((step) => (
         <AccordionItem
           key={step.id}

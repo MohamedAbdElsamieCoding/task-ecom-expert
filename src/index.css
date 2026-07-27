@@ -2,6 +2,8 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary: #4e2fd2;
+  --color-secondary: #0aa288;
   --font-sans: "Manrope", sans-serif;
 }
 
