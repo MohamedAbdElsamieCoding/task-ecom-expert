@@ -6,7 +6,7 @@ const Accordion = () => {
   const [openStep, setOpenStep] = useState(1);
 
   return (
-    <div className="bg-white p-3 rounded-xl">
+    <div className="bg-white md:p-3 rounded-xl">
       {STEPS.map((step) => (
         <AccordionItem
           key={step.id}
@@ -15,6 +15,7 @@ const Accordion = () => {
           onToggle={() => setOpenStep(step.id)}
         />
       ))}
+
     </div>
   );
 };

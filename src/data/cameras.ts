@@ -49,12 +49,8 @@ export const cameras = [
     description: "Two cameras. Two views. Double the porch protection.",
     oldPrice: 149.98,
     price: 129.98,
-    discount: 13,
     mainImage: "/cam4/camera4.png",
-    colors: [
-      { id: 1, name: "Black", image: "/cam4/cam4-black.png" },
-      { id: 2, name: "White", image: "/cam4/cam4-white.png" },
-    ],
+
     learnMore: "#",
   },
   {
@@ -64,7 +60,6 @@ export const cameras = [
       "Protect anywhere. See everything in 2.5K HDR. No power outlet or electrician needed.",
     oldPrice: 99.98,
     price: 84.98,
-    discount: 15,
     mainImage: "/cam5/camera5.png",
     colors: [
       { id: 1, name: "Black", image: "/cam5/cam5-black.png" },

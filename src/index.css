@@ -11,4 +11,7 @@
   body {
     @apply font-sans box-border;
   }
+  button {
+    @apply cursor-pointer;
+  }
 }

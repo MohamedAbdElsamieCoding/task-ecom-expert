@@ -5,10 +5,10 @@ export type CameraCardProps = {
     description: string;
     oldPrice: number;
     price: number;
-    discount: number;
+    discount?: number;
     learnMore: string;
     mainImage: string;
-    colors: {
+    colors?: {
       id: number;
       name: string;
       image: string;
