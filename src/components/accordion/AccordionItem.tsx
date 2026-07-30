@@ -2,8 +2,11 @@ import { LuChevronDown } from "react-icons/lu";
 import type { AccordionItemProps } from "../../types/accordionItem.type";
 import { clsx } from "clsx";
 import { STEPS } from "../../data/steps";
+import { useAppSelector } from "../../store/hooks";
 
 const AccordionItem = ({ isOpen, onToggle, step }: AccordionItemProps) => {
+  const cameraCount = useAppSelector((state) => state.bundle.cameras.length);
+
   return (
     <div
       className={clsx(
@@ -28,7 +31,9 @@ const AccordionItem = ({ isOpen, onToggle, step }: AccordionItemProps) => {
           </div>
 
           <div className="flex items-center gap-1">
-            <p className="text-primary text-sm font-semibold">2 selected</p>
+            <p className="text-primary text-sm font-semibold">
+              {cameraCount} selected
+            </p>
             <LuChevronDown
               className={clsx(
                 "transition-transform duration-300",

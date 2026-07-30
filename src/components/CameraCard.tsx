@@ -1,9 +1,40 @@
 import type { CameraCardProps } from "../types/cameraCard.type";
 import { LuMinus, LuPlus } from "react-icons/lu";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { clsx } from "clsx";
+import {
+  addCamera,
+  decreaseCameraQuantity,
+  selectCameraColor,
+} from "../store/features/bundle/bundleSlice";
 
 const CameraCard = ({ camera }: CameraCardProps) => {
+  const selectedCamera = useAppSelector((state) =>
+    state.bundle.cameras.find((item) => item.id === camera.id),
+  );
+  const isSelected = !!selectedCamera;
+
+  const dispatch = useAppDispatch();
+  const selectedColorId = selectedCamera?.colorId;
+  const handleAdd = () => {
+    const defaultColorId = camera.colors?.[0]?.id ?? 0;
+    dispatch(
+      addCamera({
+        id: camera.id,
+        colorId: defaultColorId,
+      }),
+    );
+  };
+
   return (
-    <div className="flex justify-between gap-5 rounded-xl border-2 border-primary/70 p-3 bg-white w-full h-full md:flex-col lg:flex-row md:w-56.25 lg:w-full">
+    <div
+      className={clsx(
+        "flex justify-between gap-5 rounded-xl border-2 p-3 bg-white w-full h-full md:flex-col lg:flex-row md:w-56.25 lg:w-full transition-colors",
+        isSelected
+          ? "border-primary"
+          : "border-gray-200 hover:border-primary/40",
+      )}
+    >
       <div className="flex flex-col md:flex-row lg:flex-col gap-4 w-fit">
         {camera.discount! > 0 && (
           <div className="rounded-full py-2 px-4 bg-primary w-fit md:h-fit">
@@ -39,7 +70,20 @@ const CameraCard = ({ camera }: CameraCardProps) => {
           {camera.colors?.map((color) => (
             <button
               key={color.id}
-              className="text-xs border rounded-md hover:border-secondary hover:bg-secondary/20 flex items-center w-fit px-2"
+              onClick={() =>
+                dispatch(
+                  selectCameraColor({
+                    id: camera.id,
+                    colorId: color.id,
+                  }),
+                )
+              }
+              className={clsx(
+                "text-xs border rounded-md flex items-center w-fit px-2 transition-colors",
+                selectedColorId === color.id
+                  ? "border-primary bg-primary/10"
+                  : "border-gray-300 hover:border-secondary hover:bg-secondary/20",
+              )}
             >
               <div className="h-6 w-6">
                 <img
@@ -56,11 +100,17 @@ const CameraCard = ({ camera }: CameraCardProps) => {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <button className="border-2 border-gray-300 rounded-sm text-gray-300 text-lg">
+            <button
+              onClick={() => dispatch(decreaseCameraQuantity(camera.id))}
+              className="border-2 border-gray-300 rounded-sm text-gray-300 text-lg"
+            >
               <LuMinus />
             </button>
-            <span>0</span>
-            <button className="bg-gray-300 rounded-sm text-black text-sm p-1">
+            {selectedCamera?.quantity ?? 0}{" "}
+            <button
+              onClick={handleAdd}
+              className="bg-gray-300 rounded-sm text-black text-sm p-1"
+            >
               <LuPlus />
             </button>
           </div>
