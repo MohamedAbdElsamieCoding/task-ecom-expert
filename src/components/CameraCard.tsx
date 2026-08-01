@@ -56,7 +56,7 @@ const CameraCard = ({ camera }: CameraCardProps) => {
           <h3 className="font-semibold text-base">{camera.name}</h3>
           <div className="flex flex-col items-start gap-1">
             <p className="text-xs font-medium text-[#1F1F1FBF]/70 ">
-              {camera.description}{" "}
+              {camera.description}
               <a
                 className="underline text-primary text-xs font-normal"
                 href={camera.learnMore}

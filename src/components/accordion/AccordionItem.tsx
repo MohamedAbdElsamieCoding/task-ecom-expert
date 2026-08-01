@@ -5,7 +5,21 @@ import { STEPS } from "../../data/steps";
 import { useAppSelector } from "../../store/hooks";
 
 const AccordionItem = ({ isOpen, onToggle, step }: AccordionItemProps) => {
-  const cameraCount = useAppSelector((state) => state.bundle.cameras.length);
+  const cameras = useAppSelector((state) => state.bundle.cameras.length);
+  const plans = useAppSelector((state) => (state.bundle.planId ? 1 : 0));
+  const sensors = useAppSelector((state) =>
+    state.bundle.sensors.reduce((sum, item) => sum + item.quantity, 0),
+  );
+  const protections = useAppSelector((state) =>
+    state.bundle.protectionId ? 1 : 0,
+  );
+
+  const counts = {
+    cameras,
+    plans,
+    sensors,  
+    protections,
+  };
 
   return (
     <div
@@ -32,7 +46,7 @@ const AccordionItem = ({ isOpen, onToggle, step }: AccordionItemProps) => {
 
           <div className="flex items-center gap-1">
             <p className="text-primary text-sm font-semibold">
-              {cameraCount} selected
+              {counts[step.key]} selected
             </p>
             <LuChevronDown
               className={clsx(

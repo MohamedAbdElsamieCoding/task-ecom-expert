@@ -1,17 +1,25 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { BundleState } from "./types";
+import { loadBundle } from "../../../utils/localStorage";
 
-const initialState: BundleState = {
+const initialState: BundleState = loadBundle() ?? {
   cameras: [],
   sensors: [],
+  plans: [],
+  protections: [],
   planId: null,
   protectionId: null,
+  currentStep: 1,
 };
 
 const bundleSlice = createSlice({
   name: "bundle",
   initialState,
   reducers: {
+    setCurrentStep: (state, action: PayloadAction<number>) => {
+      state.currentStep = action.payload;
+    },
+
     addCamera: (
       state,
       action: PayloadAction<{ id: number; colorId: number }>,
@@ -71,12 +79,47 @@ const bundleSlice = createSlice({
       }
     },
 
+    addSensor: (state, action: PayloadAction<number>) => {
+      const sensor = state.sensors.find((item) => item.id === action.payload);
+
+      if (sensor) {
+        sensor.quantity++;
+      } else {
+        state.sensors.push({
+          id: action.payload,
+          quantity: 1,
+        });
+      }
+    },
+
+    decreaseSensorQuantity: (state, action: PayloadAction<number>) => {
+      const sensor = state.sensors.find((item) => item.id === action.payload);
+      if (!sensor) return;
+
+      if (sensor.quantity === 1) {
+        state.sensors = state.sensors.filter(
+          (item) => item.id !== action.payload,
+        );
+      } else {
+        sensor.quantity--;
+      }
+    },
+
     selectPlan: (state, action: PayloadAction<number>) => {
       state.planId = action.payload;
     },
 
     selectProtection: (state, action: PayloadAction<number>) => {
-      state.protectionId = action.payload;
+      const existing = state.protections.find(
+        (item) => item.id === action.payload,
+      );
+      if (existing) {
+        state.protections = state.protections.filter(
+          (item) => item.id !== action.payload,
+        );
+      } else {
+        state.protections.push({ id: action.payload, quantity: 1 });
+      }
     },
 
     resetBundle: () => initialState,
@@ -88,10 +131,13 @@ export const {
   removeCamera,
   decreaseCameraQuantity,
   increaseCameraQuantity,
+  addSensor,
+  decreaseSensorQuantity,
   resetBundle,
   selectCameraColor,
   selectPlan,
   selectProtection,
+  setCurrentStep,
 } = bundleSlice.actions;
 
 export default bundleSlice.reducer;

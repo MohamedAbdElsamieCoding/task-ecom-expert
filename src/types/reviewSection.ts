@@ -6,6 +6,7 @@ export type ReviewItemType = {
   price: string;
   oldPrice?: string;
   free?: boolean;
+  showQuantityControl?: boolean;
 };
 
 export type ReviewSectionProps = {

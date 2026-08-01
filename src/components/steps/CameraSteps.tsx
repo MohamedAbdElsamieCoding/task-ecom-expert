@@ -1,8 +1,23 @@
 import { clsx } from "clsx";
 import { cameras } from "../../data/cameras";
 import CameraCard from "../CameraCard";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setCurrentStep } from "../../store/features/bundle/bundleSlice";
+import toast from "react-hot-toast";
 
 const CameraStep = () => {
+  const dispatch = useAppDispatch();
+  const selectedCameraCount = useAppSelector((state) =>
+    state.bundle.cameras.reduce((sum, camera) => sum + camera.quantity, 0),
+  );
+
+  const handleNext = () => {
+    if (selectedCameraCount === 0) {
+      toast.error("Please choose at least one camera.");
+      return;
+    }
+    dispatch(setCurrentStep(2));
+  };
   return (
     <div className="flex flex-col gap-6 w-full">
       <div className="flex flex-col md:flex-row md:flex-wrap lg:grid lg:grid-cols-2 gap-4">
@@ -27,7 +42,10 @@ const CameraStep = () => {
       </div>
 
       <div className="flex justify-center mt-2">
-        <button className="w-fit rounded-lg border-2 border-primary px-6 py-1.5 hover:bg-primary/5 transition-colors">
+        <button
+          onClick={handleNext}
+          className="w-fit rounded-lg border-2 border-primary px-6 py-1.5 hover:bg-primary/5 transition-colors"
+        >
           <p className="text-lg font-semibold text-primary">
             Next: Choose your plan
           </p>

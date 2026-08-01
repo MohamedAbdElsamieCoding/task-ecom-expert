@@ -1,6 +1,12 @@
 import Border from "../Border";
+import { useAppSelector } from "../../store/hooks";
+import { plans } from "../../data/plans";
 
 const PlanItem = () => {
+  const planId = useAppSelector((state) => state.bundle.planId);
+  const plan = plans.find((p) => p.id === planId);
+
+  if (!plan) return null;
   return (
     <div className="flex flex-col gap-2 mt-2">
       <Border />
@@ -10,18 +16,13 @@ const PlanItem = () => {
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-1">
           <img src="/icons/Layer_1.png" alt="icon" />
-          <p className="font-bold text-sm">
-            Cam{" "}
-            <strong className="font-extrabold text-sm text-primary">
-              Unlimited
-            </strong>
-          </p>
+          <p className="font-bold text-sm">{plan.name}</p>
         </div>
         <div className="flex flex-col items-end">
           <p className="line-through font-medium text-gray-600 text-xs">
-            $12.99/mo
+            {plan.oldPrice}
           </p>
-          <p className="text-primary text-xs font-bold">$9.99/mo</p>
+          <p className="text-primary text-xs font-bold">{plan.price}</p>
         </div>
       </div>
     </div>
